@@ -2,9 +2,9 @@ local MAX_NAME_LENGTH = 30
 local MAX_WEAR = 65535
 local SAME_TOOL_REPAIR_BOOST = math.ceil(MAX_WEAR * 0.12) -- 12%
 local MATERIAL_TOOL_REPAIR_BOOST = {
---	math.ceil(MAX_WEAR * 0.25), -- 25%
---	math.ceil(MAX_WEAR * 0.5), -- 50%
-	math.ceil(MAX_WEAR * 0.75), -- 75%
+	math.ceil(MAX_WEAR * 0.34), -- 25%
+	math.ceil(MAX_WEAR * 0.68), -- 50%
+	math.ceil(MAX_WEAR * 1), -- 75%
 	MAX_WEAR, -- 100%
 }
 local NAME_COLOR = "#FFFF4C"
@@ -13,22 +13,32 @@ local function get_anvil_formspec(set_name)
 	if not set_name then
 		set_name = ""
 	end
-	return "size[8,9]"..
-	default.gui_bg..
-	default.gui_bg_img..
-	default.gui_slots..
-	"list[current_player;main;0,4.85;8,1;]" ..
-	"list[current_player;main;0,6.08;8,3;8]" ..
+	return 	"size[8,8.5]"..
+	"list[current_player;main;0,4.5;8,4]"..
 	"list[context;input;1,2.5;1,1;]"..
-	"list[context;input;4,2.5;1,1;1]"..
-	"image[5.5,2.5;1,1;gui_furnace_arrow_bg.png^[transformR270]"..
-	"list[context;output;7,2.5;1,1;]"..
-	"field[1.25,1;4,1;name;;"..minetest.formspec_escape(set_name).."]"..
+	"list[context;input;3.5,2.5;1,1;1]"..
+	"list[context;output;6,2.5;1,1;]"..
+	
+	"image[2.35,2.6;0.8,0.8;plus.png]" ..
+	"image[4.75,2.5;1,1;arrow0.png]" ..
+	"image[2.6,0.65;3,1;rep.png]" ..
+	
+	"image[5.3,0.5;1.3,1.3;ham.png]" ..
+	"image[1.3,0.5;1.3,1.3;pick.png]" ..
+	
+	
+	
+	"bgcolor[#080808BB;true]" ..
+	
+	
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+	
 	"field_close_on_enter[name;false]"..
-	"button[5,0.7;2,1;name_button;Set Name]"..
+	"listring[context;input]"..
 	"listring[context;output]"..
 	"listring[current_player;main]"..
-	"listring[context;input]"..
 	"listring[current_player;main]"
 end
 
