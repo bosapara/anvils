@@ -281,6 +281,20 @@ local anvildef = {
 	_blast_resistance = 6000,
 	hardness = 5,
 	_after_falling = damage_anvil_by_falling,
+	after_place_node = function(pos, placer)
+	
+		
+		local name = placer:get_player_name()
+		local pinv = placer:get_inventory()
+
+		local meta =  minetest.get_meta(pos);
+		local owner = placer:get_player_name() or "";
+		local privs = minetest.get_player_privs(owner);
+		
+		meta:set_string("owner",owner);
+		meta:set_string("infotext","Anvil (owned by " .. owner .. "): ");
+
+	end,
 
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos) 
@@ -290,6 +304,11 @@ local anvildef = {
 		meta:from_table(meta2:to_table())
 	end,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+		local meta = minetest.get_meta(pos);
+		local privs = minetest.get_player_privs(player:get_player_name());
+		if meta:get_string("owner")~=player:get_player_name() and not privs.privs then return 0 end
+		
+		
 		if listname == "output" then
 			return 0
 		else
@@ -297,6 +316,11 @@ local anvildef = {
 		end
 	end,
 	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+		local meta = minetest.get_meta(pos);
+		local privs = minetest.get_player_privs(player:get_player_name());
+		if meta:get_string("owner")~=player:get_player_name() and not privs.privs then return 0 end
+	
+	
 		if to_list == "output" then
 			return 0
 		elseif from_list == "output" and to_list == "input" then
@@ -342,7 +366,18 @@ local anvildef = {
 			end
 		end
 	end,
+	
+	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+		local meta = minetest.get_meta(pos);
+		local privs = minetest.get_player_privs(player:get_player_name());
+		if meta:get_string("owner")~=player:get_player_name() and not privs.privs then return 0 end
+		return stack:get_count();
+	end,
+	
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
+		
+	
+	
 		local meta = minetest.get_meta(pos)
 		if listname == "output" then
 			local inv = meta:get_inventory()
