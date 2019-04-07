@@ -14,6 +14,8 @@ local function get_anvil_formspec(set_name)
 		set_name = ""
 	end
 	return 	"size[8,8.5]"..
+	"background[1,1;1,1;gui_formbg2.png;true]"..
+	"bgcolor[#080808BB;true]"..
 	"list[current_player;main;0,4.5;8,4]"..
 	"list[context;input;1,2.5;1,1;]"..
 	"list[context;input;3.5,2.5;1,1;1]"..
@@ -348,6 +350,7 @@ local anvildef = {
 					local istack = inv:get_stack("input", i)
 					istack:set_count(math.max(0, istack:get_count() - count))
 					inv:set_stack("input", i, istack)
+
 				end
 			end
 		end
@@ -392,6 +395,8 @@ local anvildef = {
 					local materials_used = get_consumed_materials(tool, material)
 					material:set_count(material:get_count() - materials_used)
 					tool:take_item()
+					local player_name = player:get_player_name()
+					minetest.sound_play("anvil_use", {to_player=player_name, gain = 1.0})
 					if distinguished == "tool" then
 						input1, input2 = tool, material
 					else
