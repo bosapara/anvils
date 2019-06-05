@@ -33,8 +33,8 @@ local function get_anvil_formspec(set_name)
 	"bgcolor[#080808BB;true]" ..
 	
 	
-		default.gui_bg..
-		default.gui_bg_img..
+		--default.gui_bg..
+		--default.gui_bg_img..
 		default.gui_slots..
 	
 	"field_close_on_enter[name;false]"..
